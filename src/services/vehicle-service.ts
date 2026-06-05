@@ -11,14 +11,14 @@ export class VehicleService {
     const existing = await this.repository.findByPlate(input.plate);
 
     if (existing) {
-      throw new ConflictError(`A vehicle with plate ${input.plate} already exists.`);
+      throw new ConflictError(`Um veículo com a placa ${input.plate} já existe.`);
     }
 
     try {
       return await this.repository.create(input);
     } catch (error) {
       if (isUniqueViolation(error)) {
-        throw new ConflictError(`A vehicle with plate ${input.plate} already exists.`);
+        throw new ConflictError(`Um veículo com a placa ${input.plate} já existe.`);
       }
 
       throw error;
@@ -33,7 +33,7 @@ export class VehicleService {
     const vehicle = await this.repository.findById(id);
 
     if (!vehicle) {
-      throw new NotFoundError("Vehicle not found.");
+      throw new NotFoundError("Veículo não encontrado.");
     }
 
     return vehicle;
@@ -43,14 +43,14 @@ export class VehicleService {
     const current = await this.repository.findById(id);
 
     if (!current) {
-      throw new NotFoundError("Vehicle not found.");
+      throw new NotFoundError("Veículo não encontrado.");
     }
 
     if (input.plate) {
       const vehicleWithPlate = await this.repository.findByPlate(input.plate);
 
       if (vehicleWithPlate && vehicleWithPlate.id !== id) {
-        throw new ConflictError(`A vehicle with plate ${input.plate} already exists.`);
+        throw new ConflictError(`Um veículo com a placa ${input.plate} já existe.`);
       }
     }
 
@@ -58,13 +58,13 @@ export class VehicleService {
       const updated = await this.repository.update(id, input);
 
       if (!updated) {
-        throw new NotFoundError("Vehicle not found.");
+        throw new NotFoundError("Veículo não encontrado.");
       }
 
       return updated;
     } catch (error) {
       if (isUniqueViolation(error) && input.plate) {
-        throw new ConflictError(`A vehicle with plate ${input.plate} already exists.`);
+        throw new ConflictError(`Um veículo com a placa ${input.plate} já existe.`);
       }
 
       throw error;
@@ -75,7 +75,7 @@ export class VehicleService {
     const deleted = await this.repository.delete(id);
 
     if (!deleted) {
-      throw new NotFoundError("Vehicle not found.");
+      throw new NotFoundError("Veículo não encontrado.");
     }
   }
 }
